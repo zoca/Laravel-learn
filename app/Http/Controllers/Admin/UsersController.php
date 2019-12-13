@@ -5,23 +5,26 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 
 class UsersController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth')->except('login');  // moras da budes ulogovan da bi koristio ostale rute
-        $this->middleware('guest')->only('login');
+        $this->middleware('auth')->except(['login', 'resetpassword']);  // moras da budes ulogovan da bi koristio ostale rute
+        $this->middleware('isadmin')->only(['index', 'create', 'store', 'changestatus', 'delete']);
+        $this->middleware('guest')->only(['login', 'resetpassword']);
     }
 
     public function index()
     {
         //$users = User::where('deleted', 0)->get();
         $users = User::notdeleted()->get();
-        
+
         return view('admin.users.index', compact('users'));
     }
 
@@ -47,7 +50,7 @@ class UsersController extends Controller
                 return redirect(route('users.login'))
                     ->withErrors(['email' => trans('auth.failed')])
                     ->withInput(['email' => request('email')]);
-                    //ovo radimo da bismo preneli greske i email koji je upisan kada redirektujemo korisnika na login
+                //ovo radimo da bismo preneli greske i email koji je upisan kada redirektujemo korisnika na login
             }
         }
         return view('admin.users.login');
@@ -64,14 +67,14 @@ class UsersController extends Controller
     }
 
     public function store()
-    {// validacija
+    { // validacija
         $data = request()->validate([                           // request->validate vraca niz sa validirani podacima, ali ovo nema u svim verzijama Laravel-a
-            'name' =>'required|string|min:3|max:191',
-            'email' =>'required|string|email|unique:users|max:191',
-            'password' =>'required|string|min:5|max:191|confirmed',
-            'role' =>'required|string|in:administrator,moderator',
-            'phone' =>'nullable|string|min:5|max:191',
-            'address' =>'nullable|string|min:5|max:191',
+            'name' => 'required|string|min:3|max:191',
+            'email' => 'required|string|email|unique:users|max:191',
+            'password' => 'required|string|min:5|max:191|confirmed',
+            'role' => 'required|string|in:administrator,moderator',
+            'phone' => 'nullable|string|min:5|max:191',
+            'address' => 'nullable|string|min:5|max:191',
         ]);
 
         // dopuna $data
@@ -88,35 +91,48 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
+        $this->chechPrivilegies($user);
+
         return view('admin.users.edit', compact('user'));
     }
 
     public function update(User $user)
     {
+        $this->chechPrivilegies($user);
+
         // validacija
-         request()->validate([                           
-            'name' =>'required|string|min:3|max:191',
-            'role' =>'required|string|in:administrator,moderator',
-            'phone' =>'nullable|string|min:5|max:191',
-            'address' =>'nullable|string|min:5|max:191',
+        request()->validate([
+            'name' => 'required|string|min:3|max:191',
+            'role' => 'required|string|in:administrator,moderator',
+            'phone' => 'nullable|string|min:5|max:191',
+            'address' => 'nullable|string|min:5|max:191',
         ]);
 
         $user->name = request()->name;
-        $user->role = request()->role;
+
         $user->phone = request()->phone;
         $user->address = request()->address;
 
+        if (auth()->user()->role == User::ADMINISTRATOR) {
+            $user->role = request()->role;
+        }
+
         $user->save();
 
-        session()->flash('message-type', 'success');
-        session()->flash('message-text', 'Successfully edited user ' . $user->name . '!!!');
-
-        return redirect()->route('users.index');
+        if (auth()->user()->role == User::ADMINISTRATOR) {
+            session()->flash('message-type', 'success');
+            session()->flash('message-text', 'Successfully edited user ' . $user->name . '!!!');
+            return redirect()->route('users.index');
+        } else {
+            session()->flash('message-type', 'success');
+            session()->flash('message-text', 'Successfully edited user ' . $user->name . '!!!');
+            return redirect()->route('users.welcome');
+        }
     }
 
     public function changestatus(User $user)
     {
-        if($user->active == 1){
+        if ($user->active == 1) {
             $user->active = 0;
         } else {
             $user->active = 1;
@@ -128,6 +144,55 @@ class UsersController extends Controller
         session()->flash('message-text', 'Successfully changed status for user ' . $user->name . '!!!');
 
         return redirect()->route('users.index');
+    }
+
+    public function changepassword(User $user)
+    {
+        $this->chechPrivilegies($user);
+
+        if (request()->isMethod('post')) {
+            //only on form submit
+            $data = request()->validate([
+                'password' => 'required|string|min:5|max:191|confirmed',
+            ]);
+
+            $user->password = Hash::make(request()->password);
+            $user->save();
+
+            session()->flash('message-type', 'success');
+            session()->flash('message-text', 'Successfully changed password for user ' . $user->name . '!!!');
+
+
+            if (auth()->user()->role == User::ADMINISTRATOR) {
+                return redirect()->route('users.index');
+            } else {
+                return back();
+            }
+        }
+
+        return view('admin.users.changepassword', compact('user'));
+    }
+
+    public function resetpassword(User $user)
+    {
+        if (request()->isMethod('post')) {
+            //only on form submit
+            // validacija
+            request()->validate([
+                'email' => 'required|string|email|max:191',
+            ]);
+
+            if($user = User::where('email', 'like', request()->email)->first()){
+                DB::table('password_resets')->insert([
+                    ['email' => request()->email, 'token' => md5('cubes123'), 'created_at' => Carbon::now()],
+                ]);
+            }
+           
+            session()->flash('message-type', 'success');
+            session()->flash('message-text', 'Successfully send email!!!');
+        }
+
+        return view('admin.users.resetpassword');
     }
 
     public function delete(User $user)
@@ -142,15 +207,22 @@ class UsersController extends Controller
 
         session()->flash('message-type', 'success');
         session()->flash('message-text', 'Successfully deleted user ' . $user->name . '!!!');
-                
+
         return redirect()->route('users.index');
     }
 
     public function logout()
     { // uradi logout
-            Auth::logout();
+        Auth::logout();
+
         //redirect gde zeli vlasnik portala
         return redirect()->route('users.login')->withErrors(['message' => 'Thank you, come again!!!']);
+    }
 
+    protected function chechPrivilegies(User $user)
+    {
+        if (auth()->user()->role == User::MODERATOR && auth()->user()->id != $user->id) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

@@ -18,7 +18,7 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        <h6 class="m-0 font-weight-bold text-primary">{{ __('users.users-details') }}</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -51,8 +51,9 @@
                         <td>{{ $value->address }}</td>
                         <td>{{ ucfirst($value->role) }}</td>
                         <td class="text-center">
-                            <a href="{{ route('users.edit', ['user' => $value->id]) }}" class="btn btn-sm btn-primary text-white">{{ __('users.edit') }}</a>
-                            <a data-name='{{ $value->name }}' data-toggle="modal" data-target="#deleteModal" data-href="{{ route('users.delete', ['user' => $value->id]) }}" class="btn btn-sm btn-danger text-white">{{ __('users.delete') }}</a>
+                            <a href="{{ route('users.edit', ['user' => $value->id]) }}" class="btn btn-sm btn-primary text-white tooltip-custom" data-placement="top" title="Edit user">{{ __('users.edit') }}</a>
+                            <a href="{{ route('users.changepassword', ['user' => $value->id]) }}" class="btn btn-sm btn-success text-white tooltip-custom" data-placement="top" title="Change password"><i class="fas fa-lock fa-sm fa-fw"></i></a>
+                            <a data-name='{{ $value->name }}' data-toggle="modal" data-target="#deleteModal" data-href="{{ route('users.delete', ['user' => $value->id]) }}" class="btn btn-sm btn-danger text-white tooltip-custom" data-placement="top" title="Delete user {{ $value->name }}">{{ __('users.delete') }}</a>
                         </td>
                     </tr>
                     @endforeach
@@ -141,5 +142,9 @@
         $("#name-on-modal").html("<b>" + userName + "</b>");
         $("#delete-button-on-modal").attr('href', userDeleteUrl);
     });
+
+    $(function() {
+        $('.tooltip-custom').tooltip()
+    })
 </script>
 @endsection

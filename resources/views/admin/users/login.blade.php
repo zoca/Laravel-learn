@@ -7,6 +7,9 @@
 @section('content')
 <div class="text-center">
     <h1 class="h4 text-gray-900 mb-4">{{ __('users.login') }}</h1>
+    @if(session()->has('message-type'))
+    @include('admin.layout.partials.notification-message')
+    @endif
     @error('message')
     <div class="text text-danger">{{ $message }}</div>
     @enderror
@@ -32,6 +35,6 @@
 </form>
 <hr>
 <div class="text-center">
-    <a class="small" href="/admin/assets/forgot-password.html">{{__('users.forgot-password') }}</a>
+    <a class="small" href="{{ route('users.resetpassword') }}">{{__('users.forgot-password') }}</a>
 </div>
 @endsection
