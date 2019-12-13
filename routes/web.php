@@ -29,5 +29,12 @@ Route::get('/users/{user}/changestatus', 'Admin\UsersController@changestatus')->
 Route::any('/users/{user}/changepassword', 'Admin\UsersController@changepassword')->name('users.changepassword');
 Route::any('/users/resetpassword', 'Admin\UsersController@resetpassword')->name('users.resetpassword');
 
-
 // USERS MODUL END
+
+// PAGES MODUL START
+
+Route::get('/pages', 'Admin\PagesController@index')->name('pages.index');
+Route::get('/pages/create', 'Admin\PagesController@create')->name('pages.create');
+Route::post('/pages/store', 'Admin\PagesController@store')->name('pages.store');
+
+// PAGES MODUL end

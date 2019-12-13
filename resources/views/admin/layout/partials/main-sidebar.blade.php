@@ -13,31 +13,30 @@
      <hr class="sidebar-divider my-0">
 
      <!-- Nav Item - Dashboard -->
-     <li class="nav-item">
+     <!-- <li class="nav-item">
          <a class="nav-link" href="index.html">
              <i class="fas fa-fw fa-tachometer-alt"></i>
              <span>{{ __('users.dashboard') }}</span></a>
-     </li>
+     </li> -->
 
      <!-- Divider -->
-     <hr class="sidebar-divider">
+     <!-- <hr class="sidebar-divider"> -->
 
      <!-- Heading -->
-     <div class="sidebar-heading">
+     <!-- <div class="sidebar-heading">
          {{ __('users.interface') }}
-     </div>
+     </div> -->
 
      <!-- Nav Item - Pages Collapse Menu -->
      <li class="nav-item">
          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-             <i class="fas fa-fw fa-cog"></i>
-             <span>{{ __('users.components') }}</span>
+             <i class="fas fa-fw fa-file"></i>
+             <span>{{ __('users.pages') }}</span>
          </a>
          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
              <div class="bg-white py-2 collapse-inner rounded">
-                 <h6 class="collapse-header">{{ __('users.custom-components') }}</h6>
-                 <a class="collapse-item" href="buttons.html">{{ __('users.buttons') }}</a>
-                 <a class="collapse-item" href="cards.html">{{ __('users.cards') }}</a>
+                 <a class="collapse-item" href="{{ route('pages.index') }}">{{ __('users.preview-all') }}</a>
+                 <a class="collapse-item" href="{{ route('pages.create') }}">{{ __('users.add-new') }}</a>
              </div>
          </div>
      </li>
@@ -45,16 +44,13 @@
      <!-- Nav Item - Utilities Collapse Menu -->
      <li class="nav-item">
          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-             <i class="fas fa-fw fa-wrench"></i>
-             <span>{{ __('users.utilities') }}</span>
+             <i class="fas fa-fw fa-user"></i>
+             <span>{{ __('users.users') }}</span>
          </a>
          <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
              <div class="bg-white py-2 collapse-inner rounded">
-                 <h6 class="collapse-header">{{ __('users.custom-utilities') }}</h6>
-                 <a class="collapse-item" href="utilities-color.html">{{ __('users.colors') }}</a>
-                 <a class="collapse-item" href="utilities-border.html">{{ __('users.borders') }}</a>
-                 <a class="collapse-item" href="utilities-animation.html">{{ __('users.animations') }}</a>
-                 <a class="collapse-item" href="utilities-other.html">{{ __('users.other') }}</a>
+                 <a class="collapse-item" href="{{ route('users.index') }}">{{ __('users.preview-all') }}</a>
+                 <a class="collapse-item" href="{{ route('users.create') }}">{{ __('users.add-new') }}</a>
              </div>
          </div>
      </li>
@@ -63,12 +59,12 @@
      <hr class="sidebar-divider">
 
      <!-- Heading -->
-     <div class="sidebar-heading">
+     <!-- <div class="sidebar-heading">
          {{ __('users.addons') }}
-     </div>
+     </div> -->
 
      <!-- Nav Item - Pages Collapse Menu -->
-     <li class="nav-item active">
+     <!-- <li class="nav-item active">
          <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
              <i class="fas fa-fw fa-folder"></i>
              <span>{{ __('users.pages') }}</span>
@@ -82,27 +78,27 @@
                  <div class="collapse-divider"></div>
                  <h6 class="collapse-header">{{ __('users.other-pages') }}</h6>
                  <a class="collapse-item" href="404.html">{{ __('users.404') }}</a>
-                 <a class="collapse-item active" href="blank.html">{{ __('users.blank-pages') }}</a>
+                 <a class="collapse-item active" href="blank.html">{{ __('users.blank-page') }}</a>
              </div>
          </div>
-     </li>
+     </li> -->
 
      <!-- Nav Item - Charts -->
-     <li class="nav-item">
+     <!-- <li class="nav-item">
          <a class="nav-link" href="charts.html">
              <i class="fas fa-fw fa-chart-area"></i>
              <span>{{ __('users.charts') }}</span></a>
-     </li>
+     </li> -->
 
      <!-- Nav Item - Tables -->
-     <li class="nav-item">
+     <!-- <li class="nav-item">
          <a class="nav-link" href="tables.html">
              <i class="fas fa-fw fa-table"></i>
              <span>{{ __('users.charts') }}</span></a>
-     </li>
+     </li> -->
 
      <!-- Divider -->
-     <hr class="sidebar-divider d-none d-md-block">
+     <!-- <hr class="sidebar-divider d-none d-md-block"> -->
 
      <!-- Sidebar Toggler (Sidebar) -->
      <div class="text-center d-none d-md-inline">
