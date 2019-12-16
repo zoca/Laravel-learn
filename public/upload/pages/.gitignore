@@ -1,0 +1,4 @@
+*         
+#  ignorisi u ovom folderu
+# ali nemoj da ignorises .gitignor file 
+!.gitignore  

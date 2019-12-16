@@ -15,6 +15,7 @@ return [
     'active' =>  'Active',
     'inactive' =>  'Inactive',
     'edit' =>  'Edit',
+    'edit-page' =>  'Edit page',
     'delete' =>  'Delete',
     'cancel' =>  'Cancel',
     'delete-user' =>  'Delete User ',
@@ -55,8 +56,23 @@ return [
     'fullwidth' =>  'Fullwidth',    
     'leftaside' =>  'Leftaside',    
     'rightaside' =>  'Rightaside',    
-    'contact-form' =>  'Contact form',    
+    'contact-form' =>  'Contact form?',    
     'no' =>  'No',    
     'yes' =>  'Yes',    
+    'header-menu' =>  'Header menu?',    
+    'aside-menu' =>  'Aside menu?',    
+    'footer-menu' =>  'Footer menu?',    
+    'active-page' =>  'Page is active?',    
+    'all-pages' =>  'All pages',    
+    'pages-details' =>  'Pages details',   
+    'preview-page' =>  'Preview page',   
+    'delete-page' =>  'Delete page',   
+    'parent-page' =>  'Parent page',   
+    'top-level' =>  'Top level page',
+    'show-pages' =>  'Show pages',
+    'no-show-pages' =>  'No pages to show',
+    
+       
+    
     
 ];
