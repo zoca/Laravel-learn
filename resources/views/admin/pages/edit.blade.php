@@ -15,6 +15,9 @@
 @section('content')
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">{{ __('pages.edit-page') }}</h1>
+@if(session()->has('message-type'))
+@include('admin.layout.partials.notification-message')
+@endif
 <div class="row">
 
     <div class="offset-lg-2 col-lg-8 ">
@@ -25,7 +28,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">{{ __('pages.edit-page-details') }}</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route('pages.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('pages.update', ['page' => $page->id]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <div class="row">
@@ -63,7 +66,7 @@
                     <div class="form-group">
                         <label>Current image</label>                        
                         <img class="w-100 mb-3" src="{{  $page->getImage('m') }}" alt="">
-                        <img class="w-100 mb-3" src="{{  imageSize($page->image,'s') }}" alt="">
+                        <!-- <img class="w-100 mb-3" src="{{  imageSize($page->image,'s') }}" alt=""> -->
                     </div>
                     <div class="form-group">
                         <label>{{ __('pages.new-image') }} </label>

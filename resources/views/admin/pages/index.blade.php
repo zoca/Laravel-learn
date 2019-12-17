@@ -6,7 +6,8 @@
 
 @section('custom-css')
 <!-- Custom styles for this page -->
-<link href="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<!-- <link href="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @endsection
 
 @section('content')
@@ -46,10 +47,10 @@
                         <th>Options</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="sortable">
                     @if( count($rows) > 0 )
                     @foreach($rows as $value)
-                    <tr>
+                    <tr class="sortable">
                         <td>
                             <img class="w-100 mb-3" src="{{  $value->getImage('s') }}" alt="">
                         </td>
@@ -105,52 +106,53 @@
 
 @section('custom-js')
 <!-- Page level plugins -->
-<script src="/admin/assets/vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- <script src="/admin/assets/vendor/datatables/jquery.dataTables.min.js"></script> -->
+<!-- <script src="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script> -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <!-- Page level custom scripts -->
 <script>
     // Call the dataTables jQuery plugin
     $(document).ready(function() {
-        $('#rows').DataTable({
-            "order": [
-                [1, "asc"]
-            ],
-            "columnDefs": [{
-                    "orderable": false,
-                    "targets": [0, 2, 3]
-                },
-                {
-                    "searchable": false,
-                    "targets": [0, 3]
-                },
-            ],
-            "language": {
+        // $('#rows').DataTable({
+        //     "order": [
+        //         [1, "asc"]
+        //     ],
+        //     "columnDefs": [{
+        //             "orderable": false,
+        //             "targets": [0, 2, 3]
+        //         },
+        //         {
+        //             "searchable": false,
+        //             "targets": [0, 3]
+        //         },
+        //     ],
+        //     "language": {
 
-                // "sEmptyTable": "Nema podataka u tabeli",
-                // "sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ zapisa",
-                // "sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 zapisa",
-                // "sInfoFiltered": "(filtrirano od ukupno _MAX_ zapisa)",
-                // "sInfoPostFix": "",
-                // "sInfoThousands": ".",
-                // "sLengthMenu": "Prikaži _MENU_ zapisa",
-                // "sLoadingRecords": "Učitavanje...",
-                // "sProcessing": "Obrada...",
-                // "sSearch": "Pretraga:",
-                // "sZeroRecords": "Nisu pronađeni odgovarajući zapisi",
-                // "oPaginate": {
-                //     "sFirst": "Početna",
-                //     "sLast": "Poslednja",
-                //     "sNext": "Sledeća",
-                //     "sPrevious": "Predhodna"
-                // },
-                // "oAria": {
-                //     "sSortAscending": ": aktivirajte da sortirate kolonu uzlazno",
-                //     "sSortDescending": ": aktivirajte da sortirate kolonu silazno"
-                // }
-                // PREVOD NA SPSKI
-            }
-        });
+        //         // "sEmptyTable": "Nema podataka u tabeli",
+        //         // "sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ zapisa",
+        //         // "sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 zapisa",
+        //         // "sInfoFiltered": "(filtrirano od ukupno _MAX_ zapisa)",
+        //         // "sInfoPostFix": "",
+        //         // "sInfoThousands": ".",
+        //         // "sLengthMenu": "Prikaži _MENU_ zapisa",
+        //         // "sLoadingRecords": "Učitavanje...",
+        //         // "sProcessing": "Obrada...",
+        //         // "sSearch": "Pretraga:",
+        //         // "sZeroRecords": "Nisu pronađeni odgovarajući zapisi",
+        //         // "oPaginate": {
+        //         //     "sFirst": "Početna",
+        //         //     "sLast": "Poslednja",
+        //         //     "sNext": "Sledeća",
+        //         //     "sPrevious": "Predhodna"
+        //         // },
+        //         // "oAria": {
+        //         //     "sSortAscending": ": aktivirajte da sortirate kolonu uzlazno",
+        //         //     "sSortDescending": ": aktivirajte da sortirate kolonu silazno"
+        //         // }
+        //         // PREVOD NA SPSKI
+        //     }
+        // });
     });
 
     $('#deleteModal').on('show.bs.modal', function(event) {
@@ -164,6 +166,11 @@
 
     $(function() {
         $('.tooltip-custom').tooltip()
-    })
+    });
+
+    $(function() {
+        $("#sortable").sortable();
+        $("#sortable").disableSelection();
+    });
 </script>
 @endsection

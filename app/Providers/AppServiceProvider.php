@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $topLevelPages = Page::notdeleted()
             ->toplevel()
             ->active()
+            ->orderbyordnum()
             ->get();
         //dd($topLevelPages);
         view()->share('pagesTopLevel', $topLevelPages);

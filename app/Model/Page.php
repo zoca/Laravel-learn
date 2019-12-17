@@ -32,6 +32,11 @@ class Page extends Model
         return $query->where('page_id', 0);
     }
 
+    public function scopeOrderByOrdNum($query)
+    {
+        return $query->orderBy('order_num', 'ASC');
+    }
+
     public function breadcrumbs($parent = null)
     {
         if (is_null($parent)) {
