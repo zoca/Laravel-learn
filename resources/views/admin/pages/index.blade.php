@@ -23,10 +23,10 @@
             @if(!is_null($page))
             {{ $page->breadcrumbs() }}
             @endif
-        <!-- @if(!is_null($page) && $page->page_id != 0)
+            <!-- @if(!is_null($page) && $page->page_id != 0)
         {{ config('app.seo-separator') }} -->
-        <!--  title od roditelja -->
-        <!-- <a href="{{ route('pages.index', ['page' => $page->page_id]) }}">{{ $page->page->title }}</a> 
+            <!--  title od roditelja -->
+            <!-- <a href="{{ route('pages.index', ['page' => $page->page_id]) }}">{{ $page->page->title }}</a> 
         @endif
 
         @if(!is_null($page))
@@ -50,7 +50,9 @@
                     @if( count($rows) > 0 )
                     @foreach($rows as $value)
                     <tr>
-                        <td>{{ $value->image }}</td>
+                        <td>
+                            <img class="w-100 mb-3" src="{{  $value->getImage('s') }}" alt="">
+                        </td>
                         <td>{{ $value->title }}</td>
                         <td class="text-center">
                             @if($value->active == 1)
@@ -83,17 +85,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLongTitle">{{ __('users.delete-user') }}</h5>
+                <h5 class="modal-title" id="deleteModalLongTitle">{{ __('pages.delete-page') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure that you want to delete user <span id="name-on-modal"></span> ?
+                Are you sure that you want to delete page <span id="name-on-modal"></span> ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('users.cancel') }}</button>
-                <a id="delete-button-on-modal" class="btn btn-danger">{{ __('users.delete') }}</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('pages.cancel') }}</button>
+                <a id="delete-button-on-modal" class="btn btn-danger">{{ __('pages.delete') }}</a>
             </div>
         </div>
     </div>

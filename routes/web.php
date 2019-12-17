@@ -41,5 +41,9 @@ Route::post('/pages/{page}/edit', 'Admin\PagesController@update')->name('pages.u
 Route::get('/pages/{page}/delete', 'Admin\PagesController@delete')->name('pages.delete');
 Route::get('/pages/{page}/changestatus', 'Admin\PagesController@changestatus')->name('pages.changestatus');
 
-
 // PAGES MODUL end
+
+// FRONTEND START
+//Route::get('/kursevi-programiranje/1/web-programiranje');
+Route::get('/kursevi-programiranje-beograd/{page}/{slug}');
+// FRONTEND END

@@ -1,8 +1,9 @@
 <?php
 if (!function_exists('image_size')) {
-    function image_size($path, $size)
+    function imageSize($path, $size)
     {
-        $fileExtension = pathinfo($path, PATHINFO_EXTENSION);
-        return str_replace('.' . $fileExtension, $size . '.' . $fileExtension, $path);
+        $fileExtension = '.' . pathinfo($path, PATHINFO_EXTENSION);
+        $imgPath = str_replace($fileExtension, '-' . $size . $fileExtension, $path);
+        return $imgPath;
     }
 }

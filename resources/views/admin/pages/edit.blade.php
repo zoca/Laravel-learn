@@ -62,7 +62,8 @@
                     </div>
                     <div class="form-group">
                         <label>Current image</label>                        
-                        <img src="{{  image_size($page->image, '-l') }}" alt="">
+                        <img class="w-100 mb-3" src="{{  $page->getImage('m') }}" alt="">
+                        <img class="w-100 mb-3" src="{{  imageSize($page->image,'s') }}" alt="">
                     </div>
                     <div class="form-group">
                         <label>{{ __('pages.new-image') }} </label>

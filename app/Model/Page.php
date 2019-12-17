@@ -42,4 +42,17 @@ class Page extends Model
             echo '/ <a href="' . route('pages.index', ['page' => $page->id]) . '">' . $page->title . '</a> ';
         }
     }
+
+    public function getImage($dimension = null)
+    {
+        $imagePath = $this->image;
+
+        if(!is_null($dimension)){
+            $extension = '.' . pathinfo($imagePath, PATHINFO_EXTENSION);
+            $imagePath = str_replace($extension, '-' . $dimension .$extension, $imagePath);
+        }
+
+        return $imagePath;
+    }
+
 }
