@@ -22,6 +22,11 @@ class Page extends Model
         return $query->where('deleted', 0);
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
+
     public function scopeTopLevel($query)
     {
         return $query->where('page_id', 0);

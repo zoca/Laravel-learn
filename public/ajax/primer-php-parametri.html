@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .btn {
+            margin: 10px;
+        }
+
+        .text {
+            border: 1px solid gray;
+            margin: 10px;
+            padding: 20px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="okidac-1" class="btn">Ucitaj polaznike</button>
+    <button id="okidac-2" class="btn">Ucitaj proizvode</button>
+    <div id="response-wrapper" class="text">
+        Ovde ocekujemo response
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"> </script>
+    <script>
+        $(document).ready(function () {
+            $('#okidac-1').click(function () {
+                $.ajax({
+                    url: '/ajax/podaci/php-parametri.php',
+                    dataType: 'html', // text, htnl, json, xml
+                    type: 'POST',
+                    data: {
+                        tip: 'polaznici'
+                    }
+                }).done(function (data) {
+                    //console.log("Sve uspesno proslo");
+                    $('#response-wrapper').html(data);
+                }).fail(function () {
+                    //console.log("Desila se greska");
+                    $('#response-wrapper').html("Desila se greska");
+                })
+            });
+
+            $('#okidac-2').click(function () {
+                $.ajax({
+                    url: '/ajax/podaci/php-parametri.php',
+                    dataType: 'html', // text, htnl, json, xml
+                    type: 'POST',
+                    data: {
+                        tip: 'proizvodi'
+                    }
+                }).done(function (data) {
+                    //console.log("Sve uspesno proslo");
+                    $('#response-wrapper').html(data);
+                }).fail(function () {
+                    //console.log("Desila se greska");
+                    $('#response-wrapper').html("Desila se greska");
+                })
+            });
+        });
+    </script>
+</body>
+
+</html>

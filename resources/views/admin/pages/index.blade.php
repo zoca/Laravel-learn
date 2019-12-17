@@ -68,7 +68,7 @@
                             <a data-placement="top" title="{{ __('pages.no-show-pages') }}" class="btn btn-sm btn-info text-white tooltip-custom" disabled><i class="far fa-eye fa-sm fa-fw"></i></a>
                             @endif
                             <a data-placement="top" title="{{ __('pages.edit-page') }}" href="{{ route('pages.edit', ['page' => $value->id]) }}" class="btn btn-sm btn-primary text-white tooltip-custom">{{ __('pages.edit') }}</a>
-                            <a data-placement="top" title="{{ __('pages.preview-page') }}" href="#" class="btn btn-sm btn-success text-white tooltip-custom"><i class="fas fa-eye fa-sm fa-fw"></i></a>
+                            <a data-placement="top" title="{{ __('pages.preview-page') }}" href="{{ route('pages.show', ['page' => $value->id, 'slug'=> Str::slug($value->title, '-') ] ) }}" class="btn btn-sm btn-success text-white tooltip-custom"><i class="fas fa-eye fa-sm fa-fw"></i></a>
                             <a data-placement="top" title="{{ __('pages.delete-page') . $value->title }}" data-name='{{ $value->title }}' data-toggle="modal" data-target="#deleteModal" data-href="{{ route('pages.delete', ['page' => $value->id]) }}" class="btn btn-sm btn-danger text-white tooltip-custom">{{ __('pages.delete') }}</a>
                         </td>
                     </tr>

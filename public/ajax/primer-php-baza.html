@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .btn {
+            margin: 10px;
+        }
+
+        .text {
+            border: 1px solid gray;
+            margin: 10px;
+            padding: 20px;
+        }
+        img{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="">
+        <input type="text" name="filter" value="" id="filter">
+    </form>
+    <button id="okidac-2" class="btn">Ucitaj proizvode</button>
+    <div id="response-wrapper" class="text">
+        Ovde ocekujemo response
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"> </script>
+    <script>
+        $(document).ready(function () {
+
+            $('#okidac-2').click(function () {
+                $.ajax({
+                    url: '/ajax/podaci/php-baza.php',
+                    dataType: 'html', // text, htnl, json, xml
+                    type: 'POST',
+                    data: {
+                        filter: $('#filter').val()
+                    },
+                    beforeSend: function(xhr) {
+                        $('#response-wrapper').html('<img src="https://thumbs.gfycat.com/DisastrousUnnaturalApisdorsatalaboriosa-small.gif">');
+                    }
+                }).done(function (data) {
+                    //console.log("Sve uspesno proslo");
+                    $('#response-wrapper').html(data);
+                }).fail(function (jqXHR, status) {
+                    //console.log("Desila se greska");
+                    $('#response-wrapper').html("Desila se greska" + status);
+                })
+            });
+        });
+    </script>
+</body>
+
+</html>

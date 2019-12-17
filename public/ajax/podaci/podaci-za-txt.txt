@@ -1,0 +1,3 @@
+Ovo su podaci koje dohvatamo kroz ajax
+ovde moze i HTML da se ucita <b> ovo je b tag </b>
+<h1> ovo je h1 tag </h1>

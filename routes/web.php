@@ -45,5 +45,5 @@ Route::get('/pages/{page}/changestatus', 'Admin\PagesController@changestatus')->
 
 // FRONTEND START
 //Route::get('/kursevi-programiranje/1/web-programiranje');
-Route::get('/kursevi-programiranje-beograd/{page}/{slug}');
+Route::get('/kursevi-programiranje-beograd/{page}/{slug}', 'Frontend\FrontendController@page')->name('pages.show');
 // FRONTEND END

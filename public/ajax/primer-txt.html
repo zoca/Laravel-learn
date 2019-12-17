@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .btn {
+            margin: 10px;
+        }
+
+        .text {
+            border: 1px solid gray;
+            margin: 10px;
+            padding: 20px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="okidac-1" class="btn">Ucitaj txt</button>
+    <div id="response-wrapper" class="text">
+        Ovde ocekujemo response
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"> </script>
+    <script>
+        $(document).ready(function () {
+            $('#okidac-1').click(function () {
+                $.ajax({
+                    url: '/ajax/podaci/podaci-za-txt.txt',
+                    dataType: 'text' // text, htnl, json, xml
+                }).done(function (data) {
+                    //console.log("Sve uspesno proslo");
+                    $('#response-wrapper').html(data);
+                }).fail(function () {
+                    //console.log("Desila se greska");
+                    $('#response-wrapper').html("Desila se greska");
+                }).always(function () {
+                    //console.log("Ovo je kraj ajax-a");
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
