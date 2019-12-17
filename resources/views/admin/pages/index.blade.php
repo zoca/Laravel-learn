@@ -11,14 +11,29 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800">{{ __('pages.all-pages') }}</h1>
+<h1 class="h3 mb-4 text-gray-800">{{ __('pages.pages') }}</h1>
 @if(session()->has('message-type'))
 @include('admin.layout.partials.notification-message')
 @endif
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">{{ __('pages.pages-details') }}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">
+            <a href="{{ route('pages.index') }}">Root</a>
+            @if(!is_null($page))
+            {{ $page->breadcrumbs() }}
+            @endif
+        <!-- @if(!is_null($page) && $page->page_id != 0)
+        {{ config('app.seo-separator') }} -->
+        <!--  title od roditelja -->
+        <!-- <a href="{{ route('pages.index', ['page' => $page->page_id]) }}">{{ $page->page->title }}</a> 
+        @endif
+
+        @if(!is_null($page))
+        {{ config('app.seo-separator') }}
+        <a>{{ $page->title }}</a>
+        @endif -->
+        </h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -32,7 +47,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if( count($rows) > 0 ))
+                    @if( count($rows) > 0 )
                     @foreach($rows as $value)
                     <tr>
                         <td>{{ $value->image }}</td>
@@ -46,7 +61,7 @@
                         </td>
                         <td class="text-center">
                             @if(in_array($value->id ,$pagesIds))
-                            <a data-placement="top" title="{{ __('pages.show-pages') }}" href="{{ route('pages.index', ['page' => $value->id]) }}" class="btn btn-sm btn-info text-white tooltip-custom"><i class="far fa-eye fa-sm fa-fw"></i></a>
+                            <a data-placement="top" title="{{ __('pages.show-pages') }}" href="{{ route('pages.index', ['page' => $value->id]) }}" class="btn btn-sm btn-info text-white tooltip-custom"><i class="far fa-eye fa-sm fa-fw"></i> ({{count($value->pages)}})</a>
                             @else
                             <a data-placement="top" title="{{ __('pages.no-show-pages') }}" class="btn btn-sm btn-info text-white tooltip-custom" disabled><i class="far fa-eye fa-sm fa-fw"></i></a>
                             @endif

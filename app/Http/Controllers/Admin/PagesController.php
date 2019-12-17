@@ -15,21 +15,32 @@ class PagesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Page $page)
+    public function index(Page $page = null)
     {
-        if (isset($page->id) && !empty($page->id)) {
-            $rows = Page::where('page_id', '=', $page->id)
-                ->notdeleted()
-                ->get();
-        } else {
-            $rows = Page::topLevel()
-                ->notdeleted()
-                ->get();
+        // if (isset($page->id) && !empty($page->id)) {
+        //     $rows = Page::where('page_id', '=', $page->id)
+        //         ->notdeleted()
+        //         ->get();
+        // } else {
+        //     $rows = Page::topLevel()
+        //         ->notdeleted()
+        //         ->get();
+        // }
+            // level 0 - toplevel
+        if(is_null($page)){
+            $pageId = 0;
+        }else{
+            // subpages
+            $pageId = $page->id;
         }
+
+        $rows = Page::notdeleted()
+            ->where('page_id', $pageId)
+            ->get();
 
         $pagesIds = Page::groupBy('page_id')->pluck('page_id')->all();
         //dd($pagesIds);     
-        return view('admin.pages.index', compact('rows', 'pagesIds', 'page'));
+        return view('admin.pages.index', compact(['rows', 'pagesIds', 'page']));
     }
 
     /**
@@ -115,7 +126,7 @@ class PagesController extends Controller
             });
             $fileNamXl = '/upload/pages/' . config('app.seo-image-prefiks') . $fileName . '-' . Str::slug(request('title'), '-') . '-' . Str::slug(now(), '-') . '-xl.' . $fileExtension;
 
-            $interventionImage->save(public_path($fileNameM));
+            $interventionImage->save(public_path($fileNameL));
         }
 
         $row->save();
@@ -143,9 +154,13 @@ class PagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Page $page)
     {
-        //
+        $pagesTopLevel = Page::topLevel()
+            ->notdeleted()
+            ->where('id', '!=', $page->id)
+            ->get();
+        return view('admin.pages.edit', compact(['page', 'pagesTopLevel']));
     }
 
     /**

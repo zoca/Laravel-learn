@@ -16,6 +16,7 @@ return [
     'inactive' =>  'Inactive',
     'edit' =>  'Edit',
     'edit-page' =>  'Edit page',
+    'edit-page-details' =>  'Edit page details',
     'delete' =>  'Delete',
     'cancel' =>  'Cancel',
     'delete-user' =>  'Delete User ',
@@ -50,6 +51,7 @@ return [
     'new-page-details' =>  'New page details',
     'description' =>  'Description',
     'image' =>  'Image',
+    'new-image' =>  'New image',
     'content' =>  'Content',    
     'layout' =>  'Layout',    
     'choose-layout' =>  'Choose page Layout',    
@@ -69,8 +71,8 @@ return [
     'delete-page' =>  'Delete page',   
     'parent-page' =>  'Parent page',   
     'top-level' =>  'Top level page',
-    'show-pages' =>  'Show pages',
-    'no-show-pages' =>  'No pages to show',
+    'show-pages' =>  'Show sub pages',
+    'no-show-pages' =>  'No sub pages to show',
     
        
     
