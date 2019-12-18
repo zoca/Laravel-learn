@@ -26,8 +26,9 @@ Route::get('/users/{user}/edit', 'Admin\UsersController@edit')->name('users.edit
 Route::post('/users/{user}/edit', 'Admin\UsersController@update')->name('users.update');
 Route::get('/users/{user}/delete', 'Admin\UsersController@delete')->name('users.delete');
 Route::get('/users/{user}/changestatus', 'Admin\UsersController@changestatus')->name('users.changestatus');
-Route::any('/users/{user}/changepassword', 'Admin\UsersController@changepassword')->name('users.changepassword');
+Route::any('/users/changepassword', 'Admin\UsersController@changepassword')->name('users.changepassword');
 Route::any('/users/resetpassword', 'Admin\UsersController@resetpassword')->name('users.resetpassword');
+Route::any('/users/reset-link/{token}', 'Admin\UsersController@resetLink')->name('users.resetlink');
 
 // USERS MODUL END
 

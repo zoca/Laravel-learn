@@ -3,19 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth')->except(['login', 'resetpassword']);  // moras da budes ulogovan da bi koristio ostale rute
+        $this->middleware('auth')->except(['login', 'resetpassword', 'resetLink']);  // moras da budes ulogovan da bi koristio ostale rute
         $this->middleware('isadmin')->only(['index', 'create', 'store', 'changestatus', 'delete']);
         $this->middleware('guest')->only(['login', 'resetpassword']);
     }
@@ -181,15 +183,20 @@ class UsersController extends Controller
             request()->validate([
                 'email' => 'required|string|email|max:191',
             ]);
-
+                $token = md5('cubes123');
             if($user = User::where('email', 'like', request()->email)->first()){
                 DB::table('password_resets')->insert([
-                    ['email' => request()->email, 'token' => md5('cubes123'), 'created_at' => Carbon::now()],
+                    ['email' => request()->email, 'token' => $token, 'created_at' => Carbon::now()],
                 ]);
+
+                $resetLink = route('users.resetlink', ['token' => $token]);
+                Mail::to(request()->email)->send(new ResetPassword($resetLink)); 
+                
             }
            
             session()->flash('message-type', 'success');
             session()->flash('message-text', 'Successfully send email!!!');
+            return redirect()->route('users.login');
         }
 
         return view('admin.users.resetpassword');
