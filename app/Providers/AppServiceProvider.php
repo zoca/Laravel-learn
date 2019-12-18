@@ -27,12 +27,14 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        $topLevelPages = Page::notdeleted()
-            ->toplevel()
-            ->active()
-            ->orderbyordnum()
-            ->get();
-        //dd($topLevelPages);
-        view()->share('pagesTopLevel', $topLevelPages);
+        if (!app()->runningInConsole()) {   // proverava da li pokrece iz konzole ili iz browser-a
+            $topLevelPages = Page::notdeleted()
+                ->toplevel()
+                ->active()
+                ->orderbyordnum()
+                ->get();
+            //dd($topLevelPages);
+            view()->share('pagesTopLevel', $topLevelPages);
+        }
     }
 }

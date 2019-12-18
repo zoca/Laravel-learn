@@ -13,9 +13,11 @@
 @section('content')
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">{{ __('pages.pages') }}</h1>
+<div id="errors-wrapper">
 @if(session()->has('message-type'))
 @include('admin.layout.partials.notification-message')
 @endif
+</div>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -41,6 +43,7 @@
             <table class="table table-bordered" id="rows" width="100%" cellspacing="0">
                 <thead>
                     <tr>
+                        <th class="order-col d-none">#</th>
                         <th>Image</th>
                         <th>Title</th>
                         <th>Active</th>
@@ -50,9 +53,10 @@
                 <tbody id="sortable">
                     @if( count($rows) > 0 )
                     @foreach($rows as $value)
-                    <tr class="sortable">
+                    <tr id="{{ $value->id }}">
+                        <td class="order-col d-none">{{ $value->order_num }}</td>
                         <td>
-                            <img class="w-100 mb-3" src="{{  $value->getImage('s') }}" alt="">
+                            <img class="mb-3" src="{{  $value->getImage('s') }}" alt="">
                         </td>
                         <td>{{ $value->title }}</td>
                         <td class="text-center">
@@ -77,6 +81,21 @@
                     @endif
                 </tbody>
             </table>
+        </div>
+        <div id="form-state" class="d-none">
+            <form action="{{ route('pages.neworder') }}" class="text-right" method="post">
+                @csrf
+
+                @if(!is_null($page))
+                <input type="hidden" name="page_id" value="{{ $page->id }}">
+                @else
+                <input type="hidden" name="page_id" value="0">
+                @endif
+                
+                <input type="hidden" value="" id="input-new-order-state" name="neworder">
+                <button class="btn btn-success">Change pages order</button>
+            </form>
+
         </div>
     </div>
 </div>
@@ -169,8 +188,36 @@
     });
 
     $(function() {
-        $("#sortable").sortable();
+        $("#sortable").sortable({
+            update: function(event, ui) {
+                //alert($('#sortable').sortable('toArray'));
+                //$('#sortable').sortable('toArray');
+                $('#input-new-order-state').val($('#sortable').sortable('toArray'));
+                $('#form-state').removeClass('d-none');
+                $('.order-col').removeClass('d-none');
+            }
+        });
         $("#sortable").disableSelection();
+    });
+
+    $(document).ready(function(){
+        $('#form-state button').on('click', function(e){
+            e.preventDefault();
+            $.ajax({
+                url: "{{ route('pages.neworder')}}",
+                type: "post",
+                data: {
+                    'page_id': $('form [name=page_id]').val(),
+                    'neworder': $('#input-new-order-state').val(),
+                    '_token': $('form [name=_token]').val(),
+                },
+                dataType: 'html'
+            }).done(function(data){
+                $('#errors-wrapper').html(data);
+            }).fail(function(jqXHR, error, message){
+                alert(message);
+            })
+        });
     });
 </script>
 @endsection

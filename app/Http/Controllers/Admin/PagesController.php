@@ -118,10 +118,10 @@ class PagesController extends Controller
             $interventionImage = Image::make(public_path('/upload/pages/') . $fileName);
             $interventionImage->resize(1140, null, function ($constraint) {
                 $constraint->aspectRatio();
-            });           
+            });
             $fileNameXl = '/upload/pages/' . config('app.seo-image-prefiks') . Str::slug(request('title'), '-') . '-' . $timeStamp . '-xl.' . $fileExtension;
             $interventionImage->save(public_path($fileNameXl));
-              //intervention
+            //intervention
             // l velicina
             $interventionImage = Image::make(public_path('/upload/pages/') . $fileName);
             $interventionImage->resize(800, null, function ($constraint) {
@@ -144,8 +144,10 @@ class PagesController extends Controller
                 $constraint->aspectRatio();
             });
             $fileNameS = '/upload/pages/' . config('app.seo-image-prefiks') . Str::slug(request('title'), '-') . '-' . $timeStamp . '-s.' . $fileExtension;
-            $interventionImage->save(public_path($fileNameS));              
+            $interventionImage->save(public_path($fileNameS));
         }
+
+        $row->order_number = Page::getMyOrderNumber(request()->page_id);
 
         $row->save();
 
@@ -155,15 +157,41 @@ class PagesController extends Controller
         return redirect()->route('pages.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function neworder()
     {
-        //
+        //dd(request()->all());
+
+        // validacija obavezna
+
+        $pageId = request()->page_id;
+        $newOrder = request()->neworder;
+
+        // string u niz
+        $newOrder = explode(',', $newOrder);
+
+        foreach ($newOrder as $key => $value) {
+            $page = Page::findOrFail($value);
+            $page->order_num = $key;
+            $page->save();
+        }
+
+        $html = '
+        <div class="card mb-4 py-3 border-left-success">
+            <div class="card-body">
+            Successfully changed order
+            </div>
+        </div>
+        ';
+        return $html;
+        // session()->flash('message-type', 'success');
+        // session()->flash('message-text', 'Successfully change order');
+
+        // if($pageId == 0){
+        //     return redirect()->route('pages.index');
+        // }else{
+        //     return redirect()->route('pages.index', ['page' => $pageId]);
+        // }
+
     }
 
     /**
@@ -190,7 +218,7 @@ class PagesController extends Controller
      */
     public function update(Page $page)
     {
-        
+
         $pagesIds = Page::pluck('id')->all();   // pluck vraca niz svih id-eva
         $pagesIds[] = 0;                        // stavljam nulu u niz id-eva jer u bazi nema id 0 
         $pagesIds = implode(",", $pagesIds);
@@ -209,7 +237,7 @@ class PagesController extends Controller
             'active' => 'required|boolean',
         ]);
 
-       
+
 
         $row = $page;
 
@@ -224,7 +252,7 @@ class PagesController extends Controller
             $file = request()->image;
             $fileExtension = $file->getClientOriginalExtension();
 
-            $timeStamp =Str::slug(now(), '-');
+            $timeStamp = Str::slug(now(), '-');
 
             $fileName = $file->getClientOriginalName();
             $fileName = pathinfo($fileName, PATHINFO_FILENAME);
@@ -239,10 +267,10 @@ class PagesController extends Controller
             $interventionImage = Image::make(public_path('/upload/pages/') . $fileName);
             $interventionImage->resize(1140, null, function ($constraint) {
                 $constraint->aspectRatio();
-            });           
+            });
             $fileNameXl = '/upload/pages/' . config('app.seo-image-prefiks') . Str::slug(request('title'), '-') . '-' . $timeStamp . '-xl.' . $fileExtension;
             $interventionImage->save(public_path($fileNameXl));
-              //intervention
+            //intervention
             // l velicina
             $interventionImage = Image::make(public_path('/upload/pages/') . $fileName);
             $interventionImage->resize(800, null, function ($constraint) {
@@ -265,7 +293,7 @@ class PagesController extends Controller
                 $constraint->aspectRatio();
             });
             $fileNameS = '/upload/pages/' . config('app.seo-image-prefiks') . Str::slug(request('title'), '-') . '-' . $timeStamp . '-s.' . $fileExtension;
-            $interventionImage->save(public_path($fileNameS));              
+            $interventionImage->save(public_path($fileNameS));
         }
 
         $row->save();
@@ -309,5 +337,3 @@ class PagesController extends Controller
         return redirect()->route('pages.index');
     }
 }
-
-

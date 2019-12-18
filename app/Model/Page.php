@@ -57,12 +57,25 @@ class Page extends Model
     {
         $imagePath = $this->image;
 
-        if(!is_null($dimension)){
+        if (!is_null($dimension)) {
             $extension = '.' . pathinfo($imagePath, PATHINFO_EXTENSION);
-            $imagePath = str_replace($extension, '-' . $dimension .$extension, $imagePath);
+            $imagePath = str_replace($extension, '-' . $dimension . $extension, $imagePath);
         }
 
         return $imagePath;
     }
 
+    public static function getMyOrderNumber($parentId)
+    {
+        $lastPage = Page::notdeleted()
+            ->where('page_id', $parentId)
+            ->orderBy('order_num', 'DESC')
+            ->first();
+
+        if ($lastPage) {
+            return $lastPage->order_num + 1;
+        } else {
+            return 0;
+        }
+    }
 }
